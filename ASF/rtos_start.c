@@ -10,7 +10,7 @@
 
 #define TASK_EXAMPLE_STACK_SIZE (128 / sizeof(portSTACK_TYPE))
 #define TASK_EXAMPLE_STACK_PRIORITY (tskIDLE_PRIORITY + 1)
-static TaskHandle_t      xCreatedExampleTask;
+static volatile TaskHandle_t      xCreatedExampleTask;
 static SemaphoreHandle_t disp_mutex;
 
 /**
@@ -25,6 +25,10 @@ static void example_task(void *p)
 	while (1) {
 		if (xSemaphoreTake(disp_mutex, ~0)) {
 			/* add your code */
+			gpio_set_pin_level(LED_Orange1, true);
+        	vTaskDelay(pdMS_TO_TICKS(400));
+			gpio_set_pin_level(LED_Orange1, false);
+       		vTaskDelay(pdMS_TO_TICKS(300));
 			xSemaphoreGive(disp_mutex);
 		}
 		os_sleep(500);
@@ -48,9 +52,11 @@ void FREERTOS_V1000_0_example(void)
 	        example_task, "Example", TASK_EXAMPLE_STACK_SIZE, NULL, TASK_EXAMPLE_STACK_PRIORITY, xCreatedExampleTask)
 	    != pdPASS) {
 		while (1) {
-			;
+			
 		}
 	}
+
+	
 
 	vTaskStartScheduler();
 

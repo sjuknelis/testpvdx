@@ -630,26 +630,26 @@ __attribute__((section(".vectors"))) const DeviceVectors exception_table
  */
 void Reset_Handler(void)
 {
-// 	uint32_t *pSrc, *pDest;
+	uint32_t *pSrc, *pDest;
 
-// 	/* Initialize the relocate segment */
-// 	pSrc  = &_etext;
-// 	pDest = &_srelocate;
+	/* Initialize the relocate segment */
+	pSrc  = &_etext;
+	pDest = &_srelocate;
 
-// 	if (pSrc != pDest) {
-// 		for (; pDest < &_erelocate;) {
-// 			*pDest++ = *pSrc++;
-// 		}
-// 	}
+	if (pSrc != pDest) {
+		for (; pDest < &_erelocate;) {
+			*pDest++ = *pSrc++;
+		}
+	}
 
-// 	/* Clear the zero segment */
-// 	for (pDest = &_szero; pDest < &_ezero;) {
-// 		*pDest++ = 0;
-// 	}
+	/* Clear the zero segment */
+	for (pDest = &_szero; pDest < &_ezero;) {
+		*pDest++ = 0;
+	}
 
-// 	/* Set the vector table base address */
-// 	pSrc      = (uint32_t *)&_sfixed;
-// 	SCB->VTOR = ((uint32_t)pSrc & SCB_VTOR_TBLOFF_Msk);
+	/* Set the vector table base address */
+	pSrc      = (uint32_t *)&_sfixed;
+	SCB->VTOR = ((uint32_t)pSrc & SCB_VTOR_TBLOFF_Msk);
 
 // #if __FPU_USED
 // 	/* Enable FPU */

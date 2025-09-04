@@ -1,6 +1,7 @@
 #define APP_FLASH_START 0x00010000 // Change based on where your app is stored
 #define APP_RAM_START 0x20000000   // Starting RAM address for the app
-#define APP_SIZE 0x10000           // Size of the app in bytes
+#define APP_SIZE 0x3d20            // Size of the app in bytes XXX what the fuck am i stupid or brilliant
+#define RAM_SIZE 0x3E000           // Size of the app in bytes
 
 #define SCS_BASE (0xE000E000UL)
 #define SCB_BASE (SCS_BASE + 0x0D00UL)
@@ -23,9 +24,14 @@ volatile int test = 8;
 void bootloader(void) {
     while (test != 8);
 
+    // Zero out RAM
+    char *dst = (char *)APP_RAM_START;
+    for (long i = 0; i < RAM_SIZE; i++) {
+        dst[i] = 0;
+    }
+
     // Copy application from flash to RAM
     char *src = (char *)APP_FLASH_START;
-    char *dst = (char *)APP_RAM_START;
     for (long i = 0; i < APP_SIZE; i++) {
         dst[i] = src[i];
     }

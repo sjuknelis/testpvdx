@@ -9,20 +9,25 @@ extern void bootloader(void);
 
 void startup(void);
 
-__attribute__((section(".vectors"))) const long startup_vectors[] = {0x2003FFFF, (long)startup};
+__attribute__((section(".vectors"))) const long startup_vectors[] = {0x2003FFFC, (long)startup};
 
 void startup(void) {
+    char *p_src, *p_dst;
+
     // Copy bootloader's data segment
-    char *src = &_sidata;
-    char *dst = &_sdata;
-    while (dst < &_edata) {
-        *dst++ = *src++;
+    p_src = &_sidata;
+    p_dst = &_sdata;
+    while (p_dst < &_edata) {
+        *p_dst = *p_src;
+        p_src++;
+        p_dst++;
     }
 
     // Zero out bootloader's BSS segment
-    dst = &_sbss;
-    while (dst < &_ebss) {
-        *dst++ = 0;
+    p_dst = &_sbss;
+    while (p_dst < &_ebss) {
+        *p_dst = 0;
+        p_dst++;
     }
 
     bootloader();
