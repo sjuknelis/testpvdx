@@ -10,7 +10,7 @@
 
 #define TASK_EXAMPLE_STACK_SIZE (128 / sizeof(portSTACK_TYPE))
 #define TASK_EXAMPLE_STACK_PRIORITY (tskIDLE_PRIORITY + 1)
-static volatile TaskHandle_t      xCreatedExampleTask;
+static  TaskHandle_t      xCreatedExampleTask;
 static SemaphoreHandle_t disp_mutex;
 
 /**
